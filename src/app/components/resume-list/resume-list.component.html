@@ -1,0 +1,86 @@
+<div class="resume-list">
+  <div *ngFor="let resume of resumes" class="resume-card">
+    <div class="resume-info">
+      <h3>{{ resume.name || 'Unnamed Resume' }}</h3>
+      <p>{{ resume.email }}</p>
+      <p>{{ resume.phone }}</p>
+      <div class="actions">
+        <button (click)="viewResume(resume._id)" class="view-btn">View Details</button>
+        <button (click)="deleteResume(resume._id)" class="delete-btn">Delete</button>
+      </div>
+    </div>
+  </div>
+  <div *ngIf="resumes.length === 0" class="no-resumes">
+    No resumes found
+  </div>
+</div>
+
+<style>
+.resume-list {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  gap: 20px;
+  padding: 20px;
+}
+
+.resume-card {
+  background: white;
+  border-radius: 8px;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+  padding: 20px;
+  transition: transform 0.2s;
+}
+
+.resume-card:hover {
+  transform: translateY(-2px);
+}
+
+.resume-info h3 {
+  margin: 0 0 10px;
+  color: #333;
+}
+
+.resume-info p {
+  margin: 5px 0;
+  color: #666;
+}
+
+.actions {
+  display: flex;
+  gap: 10px;
+  margin-top: 15px;
+}
+
+.view-btn, .delete-btn {
+  padding: 8px 16px;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: background-color 0.2s;
+}
+
+.view-btn {
+  background-color: #007bff;
+  color: white;
+}
+
+.delete-btn {
+  background-color: #dc3545;
+  color: white;
+}
+
+.view-btn:hover {
+  background-color: #0056b3;
+}
+
+.delete-btn:hover {
+  background-color: #c82333;
+}
+
+.no-resumes {
+  grid-column: 1 / -1;
+  text-align: center;
+  padding: 40px;
+  color: #666;
+}
+</style> 

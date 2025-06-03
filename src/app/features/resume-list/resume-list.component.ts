@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { CommonModule, DatePipe } from '@angular/common';
-import { RouterModule } from '@angular/router';
+import { RouterModule, Router } from '@angular/router';
 import { ResumeService } from '../../core/services/resume.service';
 import { Resume } from '../../core/models/resume.model';
 
@@ -48,6 +48,7 @@ import { Resume } from '../../core/models/resume.model';
             <a [routerLink]="['/resumes', resume._id]" class="btn btn-secondary">View</a>
             <a [routerLink]="['/resumes', resume._id, 'edit']" class="btn btn-secondary">Edit</a>
             <a [routerLink]="['/resumes', resume._id, 'generate']" class="btn btn-primary">Generate</a>
+            <button class="btn btn-danger" (click)="deleteResume(resume._id)">Delete</button>
           </div>
         </div>
       </div>
@@ -148,6 +149,15 @@ import { Resume } from '../../core/models/resume.model';
       display: flex;
       gap: var(--space-3);
     }
+
+    .btn-danger {
+      background-color: var(--error-500);
+      color: white;
+    }
+
+    .btn-danger:hover {
+      background-color: var(--error-600);
+    }
     
     @media (max-width: 768px) {
       .header {
@@ -159,6 +169,10 @@ import { Resume } from '../../core/models/resume.model';
       .resume-grid {
         grid-template-columns: 1fr;
       }
+
+      .resume-actions {
+        flex-wrap: wrap;
+      }
     }
   `]
 })
@@ -166,7 +180,10 @@ export class ResumeListComponent implements OnInit {
   resumes: Resume[] = [];
   loading = true;
 
-  constructor(private resumeService: ResumeService) {}
+  constructor(
+    private resumeService: ResumeService,
+    private router: Router
+  ) {}
 
   ngOnInit(): void {
     this.loadResumes();
@@ -183,5 +200,19 @@ export class ResumeListComponent implements OnInit {
         this.loading = false;
       }
     });
+  }
+
+  deleteResume(id: string): void {
+    if (confirm('Are you sure you want to delete this resume?')) {
+      this.resumeService.deleteResume(id).subscribe({
+        next: () => {
+          this.resumes = this.resumes.filter(resume => resume._id !== id);
+        },
+        error: (error) => {
+          console.error('Error deleting resume:', error);
+          alert('Failed to delete resume. Please try again.');
+        }
+      });
+    }
   }
 }

@@ -43,8 +43,8 @@ export class ResumeService {
     return this.http.put<Resume>(`${this.apiUrl}/resumes/${id}`, resume);
   }
 
-  deleteResume(id: string): Observable<void> {
-    return this.http.delete<void>(`${this.apiUrl}/resumes/${id}`);
+  deleteResume(id: string): Observable<any> {
+    return this.http.delete(`${this.apiUrl}/resumes/${id}`);
   }
 
   generateResume(id: string, templateId: string): Observable<{ downloadUrl: string }> {
